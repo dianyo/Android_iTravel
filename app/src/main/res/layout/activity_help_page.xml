@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/helpPageBg">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/skip" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/skipHelp"
+        android:textSize="30sp"
+        android:id="@+id/skip"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/radioGroup"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/firstPage"
+            android:checked="true"
+            android:layout_gravity="bottom" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/secondPage"
+            android:layout_gravity="bottom" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/thirdPage"
+            android:layout_gravity="bottom" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fourthPage"
+            android:layout_gravity="bottom" />
+
+
+    </RadioGroup>
+
+</RelativeLayout>

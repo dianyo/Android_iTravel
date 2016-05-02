@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/lightblue"
+    tools:context="com.example.dianyo.itraveler.History">
+
+    <ListView
+        android:id="@+id/historylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/history"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/lightblue" >
+
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/history"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:background="@color/lightblue" >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="back"
+            android:id="@+id/backbutton"
+            android:clickable="true"
+            android:layout_alignBottom="@+id/historylist"
+            android:layout_centerHorizontal="true" />
+
+    </LinearLayout>
+
+</RelativeLayout>

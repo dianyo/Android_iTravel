@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0dp"
+    android:orientation="vertical"
+    tools:context="com.example.dianyo.itraveler.result" >
+
+    <com.example.dianyo.itraveler.PieChart
+        android:id="@+id/PieChart"
+        android:layout_width="fill_parent"
+        android:layout_height="510dp"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/PieChart"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:src="@drawable/edit_icon3"
+            android:id="@+id/edit_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:onClick="clickEdit" />
+
+        <TextView
+            android:id="@+id/edit_string"
+            android:text="@string/edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:textSize="25sp"
+            android:clickable="true"
+            android:onClick="clickEdit" />
+
+        <ImageView
+            android:src="@drawable/home_icon3"
+            android:id="@+id/home_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:onClick="clickHome" />
+
+        <TextView
+            android:id="@+id/home_string"
+            android:text="@string/home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:textSize="25sp"
+            android:clickable="true"
+            android:onClick="clickHome" />
+
+        <ImageView
+            android:src="@drawable/save_icon3"
+            android:id="@+id/save_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:padding="0dp"
+            android:clickable="true"
+            android:onClick="clickSave" />
+
+        <TextView
+            android:id="@+id/save_string"
+            android:text="@string/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:clickable="true"
+            android:onClick="clickSave" />
+
+    </LinearLayout>
+
+</RelativeLayout>

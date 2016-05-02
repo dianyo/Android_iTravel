@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    
+    android:background="@color/lightblue" >
+
+    <Button
+        android:id="@+id/button_continue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:onClick="continue_click"
+        android:text="繼續" />
+
+    <TextView
+        android:id="@+id/text_welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="歡迎使用travaler!"
+        android:textSize="24sp"
+        android:layout_above="@+id/edit_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="64dp" />
+
+    <EditText
+        android:id="@+id/edit_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_continue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:singleLine="true"
+        android:hint="你的名字   Ex可愛力權"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>

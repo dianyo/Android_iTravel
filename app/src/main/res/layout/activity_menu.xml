@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightblue"
+    android:onClick="start_click"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.traveler.MenuActivity" >
+
+    <Button
+        android:id="@+id/start_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="start_click"
+        android:text="開始吧"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/text_trip_name"
+        android:layout_alignEnd="@+id/text_trip_name" />
+
+    <TextView
+        android:id="@+id/text_hi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="嗨夥伴"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/edit_trip_name"
+        android:layout_alignStart="@+id/edit_trip_name" />
+
+    <TextView
+        android:id="@+id/text_trip_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:text="取個旅遊名稱吧"
+        android:textSize="22sp"
+        android:layout_below="@+id/text_hi"
+        android:layout_alignLeft="@+id/text_hi"
+        android:layout_alignStart="@+id/text_hi" />
+
+    <EditText
+        android:id="@+id/edit_trip_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:hint="旅遊名稱"
+        android:inputType="text"
+        android:ems="10"
+        android:layout_above="@+id/start_button"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

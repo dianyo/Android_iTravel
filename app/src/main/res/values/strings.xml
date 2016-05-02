@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">iTraveler</string>
+    <string name="start_new">New</string>
+    <string name="history">History</string>
+    <string name="help">Help</string>
+    <string name="exit">Exit</string>
+    <string name="skipHelp">skip</string>
+    <string name="firstPage">出遊該準備多少$的好幫手</string>
+    <string name="secondPage">類別分類完整只需填入價錢</string>
+    <string name="thirdPage">自動顯示總額以及分佈圖</string>
+    <string name="fourthPage">可以儲存預算記錄實際出遊時可以比較</string>
+    <string name="appStart">開始吧！</string>
+    <string name="title_activity_start">選擇項目</string>
+    <string name="edit">EDIT</string>
+    <string name="home">HOME</string>
+    <string name="save">SAVE</string>
+
+</resources>

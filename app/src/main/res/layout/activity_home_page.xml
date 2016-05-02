@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/allBackground"
+    tools:context="com.example.dianyo.itraveler.HomePage">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/text_new"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="30dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_new"
+        android:textSize="@dimen/main_page_text"
+        android:id="@+id/text_new"
+        android:gravity="center"
+        android:clickable="true"
+        android:onClick="startNew"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/mainPageText"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/history"
+        android:id="@+id/text_his"
+        android:textSize="@dimen/main_page_text"
+        android:layout_below="@+id/text_new"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="@color/mainPageText"
+        android:clickable="true"
+        android:onClick="his_act"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help"
+        android:id="@+id/text_help"
+        android:textSize="@dimen/main_page_text"
+        android:gravity="center"
+        android:clickable="true"
+        android:onClick="help_act"
+        android:layout_below="@+id/text_his"
+        android:layout_alignRight="@+id/text_new"
+        android:layout_alignEnd="@+id/text_new"
+        android:textColor="@color/mainPageText"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exit"
+        android:id="@+id/text_exit"
+        android:gravity="center"
+        android:textSize="@dimen/main_page_text"
+        android:clickable="true"
+        android:onClick="exit_app"
+        android:layout_below="@+id/text_help"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/mainPageText"/>
+
+</RelativeLayout>
