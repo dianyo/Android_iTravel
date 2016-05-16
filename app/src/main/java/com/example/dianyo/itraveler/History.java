@@ -2,6 +2,7 @@ package com.example.dianyo.itraveler;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -45,18 +46,6 @@ public class History extends Activity {
         writeDataToFile(hisfileName , data);
         **********************************************************
         */
-        String hisfileName = getFilesDir() + "/history" ;
-        System.arraycopy(readDataFromFile(hisfileName) , 0 , list , 0 , list.length);
-        for(int i = 0 ; i < 1000 ; i++){
-            if(list[i] != null){
-                String[] out1 = list[i].split("/");
-                String[] out2 = out1[out1.length - 1].split("_");
-                String user_name = out2[0];
-                String trip_name = out2[1];
-                arraylist.add("User: " + user_name + "   \nTrip: " + trip_name);
-            }
-            else    break;
-        }
         int layoutId = android.R.layout.simple_list_item_1;
         init_list();
         backbutton.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +56,25 @@ public class History extends Activity {
         });
     }
     private void init_list(){
+        list = new String[1000];
+        arraylist.clear();
+        String hisfileName = getFilesDir() + "/history1" ;
+/*
+        //clear garbage
+        File file = new File(hisfileName);
+        file.delete();
+*/
+        System.arraycopy(readDataFromFile(hisfileName) , 0 , list , 0 , list.length);
+        for(int i = 0 ; i < 1000 ; i++){
+            if(list[i] != null){
+                String[] out1 = list[i].split("/");
+                String[] out2 = out1[out1.length - 1].split("_");
+                String user_name = out2[0];
+                String trip_name = out2[1];
+                arraylist.add("User: " + user_name + "   \nTrip:  " + trip_name);
+            }
+            else    break;
+        }
         historylist = (ListView)this.findViewById(R.id.historylist);
         historyadapter = new HistoryAdapter(this);
         historylist.setAdapter(historyadapter);
@@ -176,9 +184,24 @@ public class History extends Activity {
                                 if(i != position)   nlist.add(arraylist.get(i));
                             }
                             arraylist.clear();
+                            String[] hisdata = new String[nlist.size()];
                             for(int i = 0 ; i < nlist.size() ; i++){
                                 arraylist.add(nlist.get(i));
+                                hisdata[i] = nlist.get(i);
                             }
+                            String hisfileName = getFilesDir() + "/history1" ;
+                            File hisfile = new File(hisfileName);
+                            hisfile.delete();
+                            String[] hisdata2 = new String[hisdata.length];
+                            for(int i = 0 ; i < hisdata.length ; i++) {
+                                String[] out1 = hisdata[i].split(":");
+                                String[] out2 = out1[1].split(" ");
+                                String[] out3 = out1[2].split(" ");
+                                String user_name = out2[1];
+                                String tripname = out3[2];
+                                hisdata2[i] = getFilesDir() + "/" + user_name + "_" + tripname;
+                            }
+                            writeDataToFile(hisfileName , hisdata2);
                             init_list();
                         }
                     });

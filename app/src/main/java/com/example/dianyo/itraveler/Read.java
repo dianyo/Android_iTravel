@@ -32,7 +32,7 @@ public class Read extends AppCompatActivity {
         String[] out2 = out1[1].split(" ");
         String[] out3 = out1[2].split(" ");
         String user_name = out2[1];
-        String tripname = out3[1];
+        String tripname = out3[2];
         String fileName = getFilesDir() + "/" + user_name + "_" + tripname;
         //Toast.makeText(Read.this , fileName , Toast.LENGTH_SHORT).show();
         //init data ******************************

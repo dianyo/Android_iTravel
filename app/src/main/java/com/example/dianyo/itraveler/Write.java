@@ -70,10 +70,16 @@ public class Write extends AppCompatActivity {
         cosdata6 = bundle.getIntegerArrayList("other_cost");
         username = bundle.getString("user_name");
         tripname = bundle.getString("trip_name");
+        if(new String(username).equals(null)){
+            username = "unknown";
+        }
+        if(new String(tripname).equals(null)){
+            tripname = "unknown";
+        }
         //filename*************************************
         String fileName = getFilesDir() + "/" + username + "_" + tripname;
         //存歷史**********************************************
-        String hisfile = getFilesDir() + "/history";
+        String hisfile = getFilesDir() + "/history1";
         String[] history = readDataFromFile(hisfile);
         List<String> historyArraylist = new ArrayList<>();
         for(int i = 0 ; i < 1000 ; i++){

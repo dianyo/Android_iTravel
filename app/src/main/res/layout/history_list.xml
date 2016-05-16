@@ -2,7 +2,7 @@
 
 <RelativeLayout android:layout_height="match_parent" android:layout_width="match_parent"  xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="TextView" android:textSize="24sp" android:layout_marginTop="16dp" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_toLeftOf="@+id/button_history_edit" android:id="@+id/textView_history"/>
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textColor="@color/navy" android:text="TextView" android:textSize="24sp"  android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_toLeftOf="@+id/button_history_edit" android:id="@+id/textView_history"/>
 
     <Button android:layout_height="50dp" android:layout_width="75dp" android:textSize="15sp" android:text="刪除" android:layout_alignParentTop="true" android:id="@+id/button_history_delete" android:layout_alignParentRight="true"/>
 
