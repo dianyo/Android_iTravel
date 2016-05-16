@@ -885,9 +885,8 @@ public class StartActivity extends Activity {
             }//用建構子獲得該item 的值
             @Override
             public boolean onLongClick(View view) {
-                Toast mToast = Toast.makeText(view.getContext(),
-                        "Long"+position, Toast.LENGTH_SHORT);
-                mToast.show();
+               // Toast mToast = Toast.makeText(view.getContext(),"Long"+position, Toast.LENGTH_SHORT);
+                //mToast.show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(StartActivity.this);
                 builder.setTitle("確定刪除項目 " + getItem(position) + " 與預算?");
                 builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
