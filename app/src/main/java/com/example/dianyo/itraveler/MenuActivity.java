@@ -3,6 +3,8 @@ package com.example.dianyo.itraveler;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -72,10 +74,22 @@ public class MenuActivity extends Activity {
     public void continue_click(View view){
         EditText txt_name = (EditText) findViewById(R.id.edit_name);
         name = txt_name.getText().toString();
-        setContentView(R.layout.activity_menu);
-        TextView txt_name_menu = (TextView) findViewById(R.id.text_hi);
-        String output = "嗨" + name;
-        txt_name_menu.setText(output);
+        if(name.length() == 0){
+            AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);
+            builder.setTitle("請輸入有效的名字");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.show();
+        }else {
+            setContentView(R.layout.activity_menu);
+            TextView txt_name_menu = (TextView) findViewById(R.id.text_hi);
+            String output = "嗨" + name;
+            txt_name_menu.setText(output);
+        }
     }
     public void start_click(View view){
         EditText txt_tripname = (EditText) findViewById(R.id.edit_trip_name);
