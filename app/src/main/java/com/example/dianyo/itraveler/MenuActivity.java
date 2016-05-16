@@ -94,27 +94,39 @@ public class MenuActivity extends Activity {
     public void start_click(View view){
         EditText txt_tripname = (EditText) findViewById(R.id.edit_trip_name);
         String tripname = txt_tripname.getText().toString();
-        Intent start_intent = new Intent();
-        start_intent.setClass(MenuActivity.this, StartActivity.class);
-        init_next();
-        Bundle bundle = new Bundle();
-        bundle.putString("user_name", name);
-        bundle.putString("trip_name", tripname);
-        bundle.putStringArrayList("eat", eat);
-        bundle.putStringArrayList("live", live);
-        bundle.putStringArrayList("transport", transport);
-        bundle.putStringArrayList("entertain", entertain);
-        bundle.putStringArrayList("buy", buy);
-        bundle.putStringArrayList("other", other);
-        bundle.putIntegerArrayList("eat_cost", eat_cost);
-        bundle.putIntegerArrayList("live_cost", live_cost);
-        bundle.putIntegerArrayList("transport_cost", transport_cost);
-        bundle.putIntegerArrayList("entertain_cost", entertain_cost);
-        bundle.putIntegerArrayList("buy_cost", buy_cost);
-        bundle.putIntegerArrayList("other_cost", other_cost);
-        start_intent.putExtras(bundle);
-        startActivity(start_intent);
-        finish();
+        if(tripname.length() == 0){
+            AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);
+            builder.setTitle("請輸入有效的旅遊名稱");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.show();
+        }else {
+            Intent start_intent = new Intent();
+            start_intent.setClass(MenuActivity.this, StartActivity.class);
+            init_next();
+            Bundle bundle = new Bundle();
+            bundle.putString("user_name", name);
+            bundle.putString("trip_name", tripname);
+            bundle.putStringArrayList("eat", eat);
+            bundle.putStringArrayList("live", live);
+            bundle.putStringArrayList("transport", transport);
+            bundle.putStringArrayList("entertain", entertain);
+            bundle.putStringArrayList("buy", buy);
+            bundle.putStringArrayList("other", other);
+            bundle.putIntegerArrayList("eat_cost", eat_cost);
+            bundle.putIntegerArrayList("live_cost", live_cost);
+            bundle.putIntegerArrayList("transport_cost", transport_cost);
+            bundle.putIntegerArrayList("entertain_cost", entertain_cost);
+            bundle.putIntegerArrayList("buy_cost", buy_cost);
+            bundle.putIntegerArrayList("other_cost", other_cost);
+            start_intent.putExtras(bundle);
+            startActivity(start_intent);
+            finish();
+        }
     }
 	/*@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

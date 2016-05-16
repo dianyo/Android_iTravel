@@ -10,7 +10,9 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,10 +33,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 public class StartActivity extends Activity {
     private ListView listview;
     private TextView total_budget;
-    private String[] objects_tmp = {"吃","住宿","交通","娛樂","購物","其他"};
+    private String[] objects_tmp = {"吃", "住宿", "交通", "娛樂", "購物", "其他"};
     private ArrayList<String> objects = new ArrayList<String>();
     //private ArrayAdapter<String> adapter;
     public MenuAdapter myadapter;
@@ -44,11 +50,11 @@ public class StartActivity extends Activity {
     private ArrayList<String> entertain = new ArrayList<String>();
     private ArrayList<String> buy = new ArrayList<String>();
     private ArrayList<String> other = new ArrayList<String>();
-    private String[] eat_tmp = {"餐廳","夜市","超商","速食","自助餐","泡麵"};
-    private String[] live_tmp = {"民宿","飯店","旅館","網咖"};
-    private String[] transport_tmp = {"火車","公車","客運","計程車","飛機","渡輪","租車","潛水艇"};
-    private String[] entertain_tmp = {"遊樂園","網咖","海灘","景點"};
-    private String[] buy_tmp = {"衣服","鞋子","紀念品"};
+    private String[] eat_tmp = {"餐廳", "夜市", "超商", "速食", "自助餐", "泡麵"};
+    private String[] live_tmp = {"民宿", "飯店", "旅館", "網咖"};
+    private String[] transport_tmp = {"火車", "公車", "客運", "計程車", "飛機", "渡輪", "租車", "潛水艇"};
+    private String[] entertain_tmp = {"遊樂園", "網咖", "海灘", "景點"};
+    private String[] buy_tmp = {"衣服", "鞋子", "紀念品"};
     private String[] other_tmp = {};
     private String menu_case = "";
     private ArrayList<Integer> eat_cost = new ArrayList<Integer>();
@@ -66,9 +72,15 @@ public class StartActivity extends Activity {
     private int total = 0;
     private String user_name;
     private String tripname;
-    public void init_history(Bundle bundle){
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
+    public void init_history(Bundle bundle) {
         int i;
-        for(i=0;i<objects_tmp.length;i++){
+        for (i = 0; i < objects_tmp.length; i++) {
             objects.add(objects_tmp[i]);
         }
         eat = bundle.getStringArrayList("eat");
@@ -77,12 +89,12 @@ public class StartActivity extends Activity {
         entertain = bundle.getStringArrayList("entertain");
         buy = bundle.getStringArrayList("buy");
         other = bundle.getStringArrayList("other");
-        eat_cost  = bundle.getIntegerArrayList("eat_cost");
+        eat_cost = bundle.getIntegerArrayList("eat_cost");
         live_cost = bundle.getIntegerArrayList("live_cost");
         transport_cost = bundle.getIntegerArrayList("transport_cost");
         entertain_cost = bundle.getIntegerArrayList("entertain_cost");
         buy_cost = bundle.getIntegerArrayList("buy_cost");
-        other_cost  = bundle.getIntegerArrayList("other_cost");
+        other_cost = bundle.getIntegerArrayList("other_cost");
         user_name = bundle.getString("user_name");
         tripname = bundle.getString("trip_name");
         eat_total = calculate_budget("eat");
@@ -94,32 +106,33 @@ public class StartActivity extends Activity {
         total = eat_total + live_total + transport_total + entertain_total + buy_total + other_total;
         return;
     }
-    public void init_state(){
+
+    public void init_state() {
         int i;
-        for(i=0;i<objects_tmp.length;i++){
+        for (i = 0; i < objects_tmp.length; i++) {
             objects.add(objects_tmp[i]);
         }
-        for(i=0;i<eat_tmp.length;i++){
+        for (i = 0; i < eat_tmp.length; i++) {
             eat.add(eat_tmp[i]);
             eat_cost.add(0);
         }
-        for(i=0;i<live_tmp.length;i++){
+        for (i = 0; i < live_tmp.length; i++) {
             live.add(live_tmp[i]);
             live_cost.add(0);
         }
-        for(i=0;i<transport_tmp.length;i++){
+        for (i = 0; i < transport_tmp.length; i++) {
             transport.add(transport_tmp[i]);
             transport_cost.add(0);
         }
-        for(i=0;i<entertain_tmp.length;i++){
+        for (i = 0; i < entertain_tmp.length; i++) {
             entertain.add(entertain_tmp[i]);
             entertain_cost.add(0);
         }
-        for(i=0;i<buy_tmp.length;i++){
+        for (i = 0; i < buy_tmp.length; i++) {
             buy.add(buy_tmp[i]);
             buy_cost.add(0);
         }
-        for(i=0;i<other_tmp.length;i++){
+        for (i = 0; i < other_tmp.length; i++) {
             other.add(other_tmp[i]);
             other_cost.add(0);
         }
@@ -131,32 +144,35 @@ public class StartActivity extends Activity {
         super.onCreate(savedInstanceState);
         Bundle bundle = this.getIntent().getExtras();
 
-        if (bundle != null){
+        if (bundle != null) {
             user_name = bundle.getString("name");
             tripname = bundle.getString("travel");
             init_history(bundle);
-        }else{
+        } else {
             init_state();
         }
         //setTitle(tripname);
         start_menu();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // check if the request code is same as what is passed  here it is 2
-        if(requestCode == 1){
-            if(resultCode==2)
-            {
+        if (requestCode == 1) {
+            if (resultCode == 2) {
                 save();
                 StartActivity.this.finish();
             }
-            if(resultCode == 3) StartActivity.this.finish();
+            if (resultCode == 3) StartActivity.this.finish();
         }
 
     }
-    public void start_menu(){
+
+    public void start_menu() {
         setContentView(R.layout.object_layout);
 
         listview = (ListView) this.findViewById(R.id.object_list);
@@ -165,14 +181,14 @@ public class StartActivity extends Activity {
         myadapter = new MenuAdapter(this);
 
         //adapter = new ArrayAdapter<>(StartActivity.this, android.R.layout.simple_list_item_1, objects);
-        listview.setDivider(new ColorDrawable(android.graphics.Color.BLACK));
+        listview.setDivider(new ColorDrawable(Color.BLACK));
         listview.setDividerHeight(2);
         listview.setAdapter(myadapter);
         //listview.setAdapter(adapter);
         listview.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                switch(myadapter.getItem(position).toString()){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (myadapter.getItem(position).toString()) {
                     case "吃":
                         Toast.makeText(StartActivity.this, "吃", Toast.LENGTH_SHORT).show();
                         eat_menu();
@@ -201,7 +217,8 @@ public class StartActivity extends Activity {
             }
         });
     }
-    public void eat_menu(){
+
+    public void eat_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
         menu_case = "eat";
@@ -224,9 +241,9 @@ public class StartActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String tmp = object_add.getText().toString();
-                        if(tmp.length() == 0){
+                        if (tmp.length() == 0) {
 
-                        }else{
+                        } else {
                             eat.add(tmp);
                             eat_cost.add(0);
                             eat_menu();
@@ -244,7 +261,8 @@ public class StartActivity extends Activity {
             }
         });
     }
-    public void live_menu(){
+
+    public void live_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
         menu_case = "live";
@@ -267,9 +285,9 @@ public class StartActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String tmp = object_add.getText().toString();
-                        if(tmp.length() == 0){
+                        if (tmp.length() == 0) {
 
-                        }else{
+                        } else {
                             live.add(tmp);
                             live_cost.add(0);
                             live_menu();
@@ -287,7 +305,8 @@ public class StartActivity extends Activity {
             }
         });
     }
-    public void transport_menu(){
+
+    public void transport_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
         menu_case = "transport";
@@ -310,9 +329,9 @@ public class StartActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String tmp = object_add.getText().toString();
-                        if(tmp.length() == 0){
+                        if (tmp.length() == 0) {
 
-                        }else{
+                        } else {
                             transport.add(tmp);
                             transport_cost.add(0);
                             transport_menu();
@@ -330,7 +349,8 @@ public class StartActivity extends Activity {
             }
         });
     }
-    public void entertain_menu(){
+
+    public void entertain_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
         menu_case = "entertain";
@@ -353,9 +373,9 @@ public class StartActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String tmp = object_add.getText().toString();
-                        if(tmp.length() == 0){
+                        if (tmp.length() == 0) {
 
-                        }else{
+                        } else {
                             entertain.add(tmp);
                             entertain_cost.add(0);
                             entertain_menu();
@@ -373,7 +393,8 @@ public class StartActivity extends Activity {
             }
         });
     }
-    public void buy_menu(){
+
+    public void buy_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
         menu_case = "buy";
@@ -396,9 +417,9 @@ public class StartActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String tmp = object_add.getText().toString();
-                        if(tmp.length() == 0){
+                        if (tmp.length() == 0) {
 
-                        }else{
+                        } else {
                             buy.add(tmp);
                             buy_cost.add(0);
                             buy_menu();
@@ -416,7 +437,8 @@ public class StartActivity extends Activity {
             }
         });
     }
-    public void other_menu(){
+
+    public void other_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
         menu_case = "other";
@@ -439,9 +461,9 @@ public class StartActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String tmp = object_add.getText().toString();
-                        if(tmp.length() == 0){
+                        if (tmp.length() == 0) {
 
-                        }else{
+                        } else {
                             other.add(tmp);
                             other_cost.add(0);
                             other_menu();
@@ -459,29 +481,75 @@ public class StartActivity extends Activity {
             }
         });
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Start Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.dianyo.itraveler/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Start Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.dianyo.itraveler/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
+
     public class MenuAdapter extends BaseAdapter {
         private LayoutInflater myInflater;
-        public MenuAdapter(Context c){
+
+        public MenuAdapter(Context c) {
             myInflater = LayoutInflater.from(c);
         }
+
         @Override
-        public int getCount(){
+        public int getCount() {
             return objects.size();
         }
+
         @Override
-        public Object getItem(int position){
+        public Object getItem(int position) {
             return objects.get(position);
         }
+
         @Override
-        public long getItemId(int position){
+        public long getItemId(int position) {
             return position;
         }
+
         public View getView(final int position, View convertView, ViewGroup parent) {
             convertView = myInflater.inflate(R.layout.menu_object, null);
             final TextView title = (TextView) convertView.findViewById(R.id.textView_object_title);
             final TextView cost = (TextView) convertView.findViewById(R.id.textView_object_money);
             title.setText(objects.get(position));
-            switch(objects.get(position)){
+            switch (objects.get(position)) {
                 case "吃":
                     cost.setText(Integer.toString(eat_total));
                     break;
@@ -505,15 +573,18 @@ public class StartActivity extends Activity {
             return convertView;
         }
     }
+
     public class ObjectAdapter extends BaseAdapter {
         private LayoutInflater myInflater;
+
         public ObjectAdapter(Context c) {
             myInflater = LayoutInflater.from(c);
         }
+
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            switch(menu_case){
+            switch (menu_case) {
                 case "eat":
                     return eat.size();
                 case "live":
@@ -529,9 +600,10 @@ public class StartActivity extends Activity {
             }
             return 0;
         }
+
         @Override
         public Object getItem(int position) {
-            switch(menu_case){
+            switch (menu_case) {
                 case "eat":
                     return eat.get(position);
                 case "live":
@@ -548,11 +620,13 @@ public class StartActivity extends Activity {
             return 0;
 
         }
+
         @Override
         public long getItemId(int position) {
             // TODO Auto-generated method stub
             return position;
         }
+
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
@@ -565,7 +639,7 @@ public class StartActivity extends Activity {
             final ImageButton imagebutton_minus = (ImageButton) convertView.findViewById(R.id.imageButton_minus);
             final ImageButton imagebutton_clear = (ImageButton) convertView.findViewById(R.id.imageButton_clear);
 
-            switch(menu_case){
+            switch (menu_case) {
                 case "eat":
                     name.setText(eat.get(position));
                     cost.setText(eat_cost.get(position).toString());
@@ -611,9 +685,9 @@ public class StartActivity extends Activity {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     // TODO Auto-generated method stub
                     int temp;
-                    if(cost.getText().length()==0){
-                    }else{
-                        switch(menu_case){
+                    if (cost.getText().length() == 0) {
+                    } else {
+                        switch (menu_case) {
                             case "eat":
                                 temp = Integer.parseInt(cost.getText().toString());
                                 //eat_cost.setElementAt( temp, position);
@@ -635,7 +709,7 @@ public class StartActivity extends Activity {
                                 entertain_cost.set(position, temp);
                                 break;
                             case "buy":
-                                temp =  Integer.parseInt(cost.getText().toString());
+                                temp = Integer.parseInt(cost.getText().toString());
                                 //buy_cost.setElementAt(temp, position);
                                 buy_cost.set(position, temp);
                                 break;
@@ -649,16 +723,18 @@ public class StartActivity extends Activity {
                         //budget.setText(Integer.toString(eat_cost[position]));
                     }
                 }
+
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     // TODO Auto-generated method stub
                 }
+
                 @Override
                 public void afterTextChanged(Editable s) {
                     // TODO Auto-generated method stub
-                    if(cost.getText().length()==0){
+                    if (cost.getText().length() == 0) {
                         cost.setText("0");
-                        switch(menu_case){
+                        switch (menu_case) {
                             case "eat":
                                 //eat_cost.setElementAt(0, position);
                                 eat_cost.set(position, 0);
@@ -690,7 +766,8 @@ public class StartActivity extends Activity {
                                 //other_cost[position] = 0;
                                 break;
                         }
-                    }switch(menu_case){
+                    }
+                    switch (menu_case) {
                         case "eat":
                             eat_total = calculate_budget(menu_case);
                             budget.setText(Integer.toString(eat_total));
@@ -734,7 +811,7 @@ public class StartActivity extends Activity {
                         public void onClick(DialogInterface dialog, int which) {
                             int i = Integer.parseInt(cost.getText().toString());
                             int j = Integer.parseInt(add_cost_dialog.getText().toString());
-                            cost.setText(Integer.toString(i+j));
+                            cost.setText(Integer.toString(i + j));
                             //eat_cost[position] += j;
                         }
                     });
@@ -760,10 +837,10 @@ public class StartActivity extends Activity {
                         public void onClick(DialogInterface dialog, int which) {
                             int i = Integer.parseInt(cost.getText().toString());
                             int j = Integer.parseInt(minus_cost_dialog.getText().toString());
-                            if(j>=i){
+                            if (j >= i) {
                                 cost.setText("0");
-                            }else{
-                                cost.setText(Integer.toString(i-j));
+                            } else {
+                                cost.setText(Integer.toString(i - j));
                                 //eat_cost[position] += j;
                             }
                         }
@@ -797,50 +874,136 @@ public class StartActivity extends Activity {
                     builder.show();
                 }
             });
+            convertView.setOnLongClickListener(new LongClick(position));
             return convertView;
+        }
+
+        class LongClick implements View.OnLongClickListener {
+            private int position;
+            public LongClick(int position){
+                this.position = position;
+            }//用建構子獲得該item 的值
+            @Override
+            public boolean onLongClick(View view) {
+                Toast mToast = Toast.makeText(view.getContext(),
+                        "Long"+position, Toast.LENGTH_SHORT);
+                mToast.show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(StartActivity.this);
+                builder.setTitle("確定刪除項目 " + getItem(position) + " 與預算?");
+                builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        remove_object(position);
+                        switch (menu_case) {
+                            case "eat":
+                                eat_total = calculate_budget(menu_case);
+                                eat_menu();
+                                break;
+                            case "live":
+                                live_total = calculate_budget(menu_case);
+                                live_menu();
+                                break;
+                            case "transport":
+                                transport_total = calculate_budget(menu_case);
+                                transport_menu();
+                                break;
+                            case "entertain":
+                                entertain_total = calculate_budget(menu_case);
+                                entertain_menu();
+                                break;
+                            case "buy":
+                                buy_total = calculate_budget(menu_case);
+                                buy_menu();
+                                break;
+                            case "other":
+                                other_total = calculate_budget(menu_case);
+                                other_menu();
+                                break;
+                        }
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.show();
+
+                return true;
+            }
         }
     }
 
-    public void back_to_menu(View view){
+    public void back_to_menu(View view) {
         total = eat_total + live_total + entertain_total + transport_total + buy_total + other_total;
         start_menu();
         return;
     }
-    public int calculate_budget(String input){
+    private void remove_object(int position){
+        switch(menu_case){
+            case "eat":
+                eat.remove(position);
+                eat_cost.remove(position);
+                break;
+            case "live":
+                live.remove(position);
+                live_cost.remove(position);
+                break;
+            case "transport":
+                transport.remove(position);
+                transport_cost.remove(position);
+                break;
+            case "entertain":
+                entertain.remove(position);
+                entertain_cost.remove(position);
+                break;
+            case "buy":
+                buy.remove(position);
+                buy_cost.remove(position);
+                break;
+            case "other":
+                other.remove(position);
+                other_cost.remove(position);
+                break;
+        }
+    }
+    public int calculate_budget(String input) {
         int count = 0;
         int i;
-        switch(input){
+        switch (input) {
             case "eat":
-                for( i=0 ; i<eat_cost.size() ; i++)
+                for (i = 0; i < eat_cost.size(); i++)
                     count += eat_cost.get(i);
                 break;
             case "live":
-                for( i=0 ; i<live_cost.size() ; i++){
+                for (i = 0; i < live_cost.size(); i++) {
                     //count += Integer.parseInt((live_cost.get(i).toString()));
                     count += live_cost.get(i);
                     //count += live_cost[i];
                 }
                 break;
             case "transport":
-                for( i=0 ; i<transport_cost.size() ; i++)
+                for (i = 0; i < transport_cost.size(); i++)
                     count += transport_cost.get(i);
                 break;
             case "entertain":
-                for( i=0 ; i<entertain_cost.size() ; i++)
+                for (i = 0; i < entertain_cost.size(); i++)
                     count += entertain_cost.get(i);
                 break;
             case "buy":
-                for( i=0 ; i<buy_cost.size() ; i++)
+                for (i = 0; i < buy_cost.size(); i++)
                     count += buy_cost.get(i);
                 break;
             case "other":
-                for( i=0 ; i<other_cost.size() ; i++)
+                for (i = 0; i < other_cost.size(); i++)
                     count += other_cost.get(i);
                 break;
         }
         return count;
     }
-    public void continue_click(View view){
+
+    public void continue_click(View view) {
         Bundle detail = new Bundle();
         detail.putIntegerArrayList("eat_cost", eat_cost);
         detail.putIntegerArrayList("live_cost", live_cost);
@@ -869,7 +1032,7 @@ public class StartActivity extends Activity {
         startActivityForResult(next, 1);
     }
 
-    public void save(){
+    public void save() {
         Bundle detail = new Bundle();
         detail.putIntegerArrayList("eat_cost", eat_cost);
         detail.putIntegerArrayList("live_cost", live_cost);
@@ -897,7 +1060,8 @@ public class StartActivity extends Activity {
         next.putExtras(detail);
         startActivity(next);
     }
-    public void activity_finish(View view){
+
+    public void activity_finish(View view) {
         finish();
     }
 
