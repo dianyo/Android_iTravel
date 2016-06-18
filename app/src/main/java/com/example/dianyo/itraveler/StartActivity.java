@@ -5,23 +5,29 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -70,6 +76,8 @@ public class StartActivity extends Activity {
     private int total = 0;
     private String user_name;
     private String tripname;
+    private int getAverage = 2;
+    private float average;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -166,6 +174,11 @@ public class StartActivity extends Activity {
                 StartActivity.this.finish();
             }
             if (resultCode == 3) StartActivity.this.finish();
+        }
+        if(requestCode == getAverage){
+            if(resultCode == RESULT_OK){
+                average = data.getFloatExtra("result", 0.0f);
+            }
         }
 
     }
@@ -848,7 +861,7 @@ public class StartActivity extends Activity {
                 public boolean onTouch(View v, MotionEvent event) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         x = event.getX();
-                        if (curDel != null){
+                        if (curDel != null) {
                             curDel.setVisibility(View.GONE);
                             imagebutton.setVisibility(View.VISIBLE);
                             imagebutton_clear.setVisibility(View.VISIBLE);
@@ -871,13 +884,70 @@ public class StartActivity extends Activity {
                             curDel = del_list;
                         }
                     }
-                    return true;
+                    return false;
                 }
             });
             del_list.setOnClickListener(new OnClick(position));
+            convertView.setOnLongClickListener(new LongClick(convertView, position));
             return convertView;
         }
 
+        class LongClick implements View.OnLongClickListener {
+            private View viewPos;
+            private int position;
+            public LongClick(View viewPos, int position) {
+                this.position = position;
+                this.viewPos = viewPos;
+            }
+            @Override
+            public boolean onLongClick(View view){
+                //set Bundle and start a Activity
+                Bundle bundleToServer = new Bundle();
+                bundleToServer.putString("command", "getdata");
+                bundleToServer.putString("object",menu_case);
+                bundleToServer.putString("subobject", (String) getItem(position));
+                Intent intent = new Intent();
+                intent.setClass(StartActivity.this, Client_service.class);
+                startActivityForResult(intent, getAverage);
+
+                //build dialog
+                TextView txt_dia = (TextView) findViewById(R.id.txt_dia);
+                txt_dia.setText("Average : " + average);
+                CustomDialog message = new CustomDialog(StartActivity.this);
+                message.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                WindowManager.LayoutParams messageParam = message.getWindow().getAttributes();
+                messageParam.gravity = Gravity.START|Gravity.TOP;
+                messageParam.x = (int)viewPos.getX();
+                messageParam.y = (int)viewPos.getY();
+                message.getWindow().setAttributes(messageParam);
+                message.show();
+                return true;
+            }
+        }
+
+        class CustomDialog extends Dialog implements View.OnClickListener{
+            public Activity c;
+            public Button ok;
+
+            public CustomDialog(Activity a){
+                super(a);
+                this.c = a;
+            }
+
+            @Override
+            protected void onCreate(Bundle savedInstanceState){
+                super.onCreate(savedInstanceState);
+                requestWindowFeature(Window.FEATURE_NO_TITLE);
+                setContentView(R.layout.my_dialog);
+                ok = (Button) findViewById(R.id.ave_ok);
+                ok.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View view){
+                this.dismiss();
+            }
+        }
         class OnClick implements View.OnClickListener {
             private int position;
             public OnClick(int position){
