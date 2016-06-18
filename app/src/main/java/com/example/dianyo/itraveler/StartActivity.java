@@ -19,6 +19,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -30,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -232,6 +234,7 @@ public class StartActivity extends Activity {
                 builder.setTitle("加入選項");
                 View view = LayoutInflater.from(StartActivity.this).inflate(R.layout.add_list, null);
                 final EditText object_add = (EditText) view.findViewById(R.id.editText_add_list);
+                object_add.setHint("其他食物");
                 builder.setView(view);
                 builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
@@ -276,6 +279,7 @@ public class StartActivity extends Activity {
                 builder.setTitle("加入選項");
                 View view = LayoutInflater.from(StartActivity.this).inflate(R.layout.add_list, null);
                 final EditText object_add = (EditText) view.findViewById(R.id.editText_add_list);
+                object_add.setHint("其他居住方式");
                 builder.setView(view);
                 builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
@@ -320,6 +324,7 @@ public class StartActivity extends Activity {
                 builder.setTitle("加入選項");
                 View view = LayoutInflater.from(StartActivity.this).inflate(R.layout.add_list, null);
                 final EditText object_add = (EditText) view.findViewById(R.id.editText_add_list);
+                object_add.setHint("其他交通工具");
                 builder.setView(view);
                 builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
@@ -364,6 +369,7 @@ public class StartActivity extends Activity {
                 builder.setTitle("加入選項");
                 View view = LayoutInflater.from(StartActivity.this).inflate(R.layout.add_list, null);
                 final EditText object_add = (EditText) view.findViewById(R.id.editText_add_list);
+                object_add.setHint("其他娛樂");
                 builder.setView(view);
                 builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
@@ -408,6 +414,7 @@ public class StartActivity extends Activity {
                 builder.setTitle("加入選項");
                 View view = LayoutInflater.from(StartActivity.this).inflate(R.layout.add_list, null);
                 final EditText object_add = (EditText) view.findViewById(R.id.editText_add_list);
+                object_add.setHint("其他物品");
                 builder.setView(view);
                 builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
@@ -452,6 +459,7 @@ public class StartActivity extends Activity {
                 builder.setTitle("加入選項");
                 View view = LayoutInflater.from(StartActivity.this).inflate(R.layout.add_list, null);
                 final EditText object_add = (EditText) view.findViewById(R.id.editText_add_list);
+                object_add.setHint("其他");
                 builder.setView(view);
                 builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
@@ -534,7 +542,8 @@ public class StartActivity extends Activity {
 
     public class ObjectAdapter extends BaseAdapter {
         private LayoutInflater myInflater;
-
+        private float x, dx;
+        private Button curDel;
         public ObjectAdapter(Context c) {
             myInflater = LayoutInflater.from(c);
         }
@@ -596,6 +605,8 @@ public class StartActivity extends Activity {
             final ImageButton imagebutton = (ImageButton) convertView.findViewById(R.id.imageButton_add);
             final ImageButton imagebutton_minus = (ImageButton) convertView.findViewById(R.id.imageButton_minus);
             final ImageButton imagebutton_clear = (ImageButton) convertView.findViewById(R.id.imageButton_clear);
+            final Button del_list = (Button) convertView.findViewById(R.id.del_list);
+            final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) cost.getLayoutParams();
 
             switch (menu_case) {
                 case "eat":
@@ -832,17 +843,48 @@ public class StartActivity extends Activity {
                     builder.show();
                 }
             });
-            convertView.setOnLongClickListener(new LongClick(position));
+            convertView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        x = event.getX();
+                        if (curDel != null){
+                            curDel.setVisibility(View.GONE);
+                            imagebutton.setVisibility(View.VISIBLE);
+                            imagebutton_clear.setVisibility(View.VISIBLE);
+                            imagebutton_minus.setVisibility(View.VISIBLE);
+                            params.addRule(RelativeLayout.LEFT_OF, 0);
+                            params.addRule(RelativeLayout.LEFT_OF, R.id.imageButton_add);
+                            cost.setLayoutParams(params);
+                        }
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        dx = event.getX();
+
+                        if (x - dx > 3) {
+                            del_list.setVisibility(View.VISIBLE);
+                            imagebutton.setVisibility(View.GONE);
+                            imagebutton_clear.setVisibility(View.GONE);
+                            imagebutton_minus.setVisibility(View.GONE);
+                            params.addRule(RelativeLayout.LEFT_OF, 0);
+                            params.addRule(RelativeLayout.LEFT_OF, R.id.del_list);
+                            cost.setLayoutParams(params);
+                            curDel = del_list;
+                        }
+                    }
+                    return true;
+                }
+            });
+            del_list.setOnClickListener(new OnClick(position));
             return convertView;
         }
 
-        class LongClick implements View.OnLongClickListener {
+        class OnClick implements View.OnClickListener {
             private int position;
-            public LongClick(int position){
+            public OnClick(int position){
                 this.position = position;
             }//用建構子獲得該item 的值
             @Override
-            public boolean onLongClick(View view) {
+            public void onClick(View view) {
                // Toast mToast = Toast.makeText(view.getContext(),"Long"+position, Toast.LENGTH_SHORT);
                 //mToast.show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(StartActivity.this);
@@ -886,8 +928,6 @@ public class StartActivity extends Activity {
                     }
                 });
                 builder.show();
-
-                return true;
             }
         }
     }

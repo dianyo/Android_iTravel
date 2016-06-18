@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:hint="暖男力權"
         android:singleLine="true"
         android:ems="10" />
 

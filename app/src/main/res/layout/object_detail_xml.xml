@@ -54,5 +54,19 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:inputType="number" />
+        <Button
+            android:id="@+id/del_list"
+            android:layout_width="90dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@color/whitesmoke"
+            android:background="@color/red"
+            android:textSize="25sp"
+            android:text="@string/delete"
+            android:visibility="gone" />
 
     </RelativeLayout>

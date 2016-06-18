@@ -28,7 +28,6 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/imageButton_eat_back"
             android:gravity="center"
-            android:text="選擇食物預算"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="30sp" />
 

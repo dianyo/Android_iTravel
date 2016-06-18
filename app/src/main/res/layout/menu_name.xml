@@ -33,7 +33,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
         android:singleLine="true"
-        android:hint="你的名字   Ex可愛力權"
+        android:hint="你的名字"
         android:ems="10" >
 
         <requestFocus />

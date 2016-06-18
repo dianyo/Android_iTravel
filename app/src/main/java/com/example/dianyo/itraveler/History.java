@@ -40,12 +40,6 @@ public class History extends Activity {
         setContentView(R.layout.activity_history);
 
         backbutton = (Button)findViewById(R.id.backbutton);
-        /*
-        ***************************** test ************************
-        String[] data = {"測" , "試" , "資" , "料"};
-        writeDataToFile(hisfileName , data);
-        **********************************************************
-        */
         int layoutId = android.R.layout.simple_list_item_1;
         init_list();
         backbutton.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +52,7 @@ public class History extends Activity {
     private void init_list(){
         list = new String[1000];
         arraylist.clear();
-        String hisfileName = getFilesDir() + "/history1" ;
+        String hisfileName = getFilesDir() + "/hisfile" ;
 /*
         //clear garbage
         File file = new File(hisfileName);
@@ -78,29 +72,6 @@ public class History extends Activity {
         historylist = (ListView)this.findViewById(R.id.historylist);
         historyadapter = new HistoryAdapter(this);
         historylist.setAdapter(historyadapter);
-
-       /* adapter = new ArrayAdapter<String>(this, layoutId, arraylist.toArray(new String[0]));
-        historylist.setAdapter(adapter);*/
-        /*historylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(History.this , "123123" , Toast.LENGTH_SHORT).show();
-            }
-        });*/
-       /* historylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                Toast.makeText(History.this , "123123" , Toast.LENGTH_SHORT).show();
-                ListView listView = (ListView) arg0;
-                String title = listView.getItemAtPosition(arg2).toString();
-                Intent intent = new Intent();
-                intent.setClass(History.this, Read.class);                                  //  這裡接到read的activity
-                Bundle bundle = new Bundle();
-                bundle.putString("title", title);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });*/
     }
     private String[] readDataFromFile(String filename) {
         String[] data = new String[1000];
@@ -183,13 +154,22 @@ public class History extends Activity {
                             for(int i = 0 ; i < arraylist.size() ; i++){
                                 if(i != position)   nlist.add(arraylist.get(i));
                             }
+                            String deldata = arraylist.get(position);
+                            String[] dout1 = deldata.split(":");
+                            String[] dout2 = dout1[1].split(" ");
+                            String[] dout3 = dout1[2].split(" ");
+                            String dusername = dout2[1];
+                            String dtripname = dout3[2];
+                            deldata = getFilesDir() + "/" + dusername + "_" + dtripname;
+                            File targetfile = new File(deldata);
+                            targetfile.delete();
                             arraylist.clear();
                             String[] hisdata = new String[nlist.size()];
                             for(int i = 0 ; i < nlist.size() ; i++){
                                 arraylist.add(nlist.get(i));
                                 hisdata[i] = nlist.get(i);
                             }
-                            String hisfileName = getFilesDir() + "/history1" ;
+                            String hisfileName = getFilesDir() + "/hisfile" ;
                             File hisfile = new File(hisfileName);
                             hisfile.delete();
                             String[] hisdata2 = new String[hisdata.length];
@@ -197,9 +177,9 @@ public class History extends Activity {
                                 String[] out1 = hisdata[i].split(":");
                                 String[] out2 = out1[1].split(" ");
                                 String[] out3 = out1[2].split(" ");
-                                String user_name = out2[1];
+                                String username = out2[1];
                                 String tripname = out3[2];
-                                hisdata2[i] = getFilesDir() + "/" + user_name + "_" + tripname;
+                                hisdata2[i] = getFilesDir() + "/" + username + "_" + tripname;
                             }
                             writeDataToFile(hisfileName , hisdata2);
                             init_list();

@@ -14,5 +14,5 @@
     <string name="edit">EDIT</string>
     <string name="home">HOME</string>
     <string name="save">SAVE</string>
-
+    <string name="delete">刪除</string>
 </resources>
