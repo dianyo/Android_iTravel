@@ -24,13 +24,13 @@ public class Client_service extends Activity {
     private JSONObject json_upload;        //從java伺服器傳遞與接收資料的json
     public final static String IP = "192.168.44.1";
     private String command = "";
-    private final int result_success = 1;
     private final int result_fail = 0;
     private Bundle client_file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.print("in Clent_service");
         client_file = this.getIntent().getExtras();
         command = client_file.getString("command");
         //setContentView(R.layout.upload_test);
@@ -47,8 +47,9 @@ public class Client_service extends Activity {
         public void run() {
             // TODO Auto-generated method stub
             try {
+                System.out.print("in COnnection");
                 // IP為Server端
-                InetAddress serverIp = InetAddress.getByName("192.168.44.1");
+                InetAddress serverIp = InetAddress.getByName("10.5.2.28");
                 int serverPort = 5050;
                 clientSocket = new Socket(serverIp, serverPort);
                 //取得網路輸出串流
@@ -70,11 +71,11 @@ public class Client_service extends Activity {
                 }
                 output.writeUTF("exit");
                 output.flush();
-                setResult(result_success);
+
             } catch (Exception e) {
                 //當斷線時會跳到catch,可以在這裡寫上斷開連線後的處理
                 e.printStackTrace();
-               // TextView v = (TextView) findViewById(R.id.upload_test);
+                // TextView v = (TextView) findViewById(R.id.upload_test);
                 //v.setText("socket error");
                 Log.e("text", "Socket連線=" + e.toString());
                 fail();    //當斷線時自動關閉房間
@@ -126,6 +127,7 @@ public class Client_service extends Activity {
                 //pass = input.readUTF();
                 output.writeUTF(gson_cost);
                 output.flush();
+                setResult(RESULT_OK);
             }
         }catch(IOException e){
             fail();

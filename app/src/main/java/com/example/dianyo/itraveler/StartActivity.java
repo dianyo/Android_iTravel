@@ -78,6 +78,7 @@ public class StartActivity extends Activity {
     private String tripname;
     private int getAverage = 2;
     private float average;
+    private View _viewPos;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -176,12 +177,49 @@ public class StartActivity extends Activity {
             if (resultCode == 3) StartActivity.this.finish();
         }
         if(requestCode == getAverage){
-            if(resultCode == RESULT_OK){
-                average = data.getFloatExtra("result", 0.0f);
+            if(resultCode == RESULT_OK) {
+                Bundle bundleResult = data.getExtras();
+                average = bundleResult.getFloat("result");
+
+                //build dialog
+                CustomDialog message = new CustomDialog(StartActivity.this);
+                message.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                WindowManager.LayoutParams messageParam = message.getWindow().getAttributes();
+                messageParam.gravity = Gravity.START|Gravity.TOP;
+                messageParam.x = (int)_viewPos.getX();
+                messageParam.y = (int)_viewPos.getY();
+                message.getWindow().setAttributes(messageParam);
+                message.show();
             }
         }
 
     }
+    class CustomDialog extends Dialog implements View.OnClickListener{
+        public Activity c;
+        public Button ok;
+
+        public CustomDialog(Activity a){
+            super(a);
+            this.c = a;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState){
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.my_dialog);
+            ok = (Button) findViewById(R.id.ave_ok);
+            ok.setOnClickListener(this);
+            TextView txt_dia = (TextView) findViewById(R.id.txt_dia);
+            txt_dia.setText("Average : " + average);
+        }
+
+        @Override
+        public void onClick(View view){
+            this.dismiss();
+        }
+    }
+
 
     public void start_menu() {
         setContentView(R.layout.object_layout);
@@ -232,6 +270,8 @@ public class StartActivity extends Activity {
     public void eat_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
+        TextView title = (TextView) findViewById(R.id.textView_eat_title);
+        title.setText("選擇食物預算");
         menu_case = "eat";
         TextView option_budget = (TextView) this.findViewById(R.id.textView_budget);
         option_budget.setText(Integer.toString(eat_total));
@@ -277,6 +317,8 @@ public class StartActivity extends Activity {
     public void live_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
+        TextView title = (TextView) findViewById(R.id.textView_eat_title);
+        title.setText("選擇住宿預算");
         menu_case = "live";
         TextView option_budget = (TextView) this.findViewById(R.id.textView_budget);
         option_budget.setText(Integer.toString(live_total));
@@ -322,6 +364,8 @@ public class StartActivity extends Activity {
     public void transport_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
+        TextView title = (TextView) findViewById(R.id.textView_eat_title);
+        title.setText("選擇交通預算");
         menu_case = "transport";
         TextView option_budget = (TextView) this.findViewById(R.id.textView_budget);
         option_budget.setText(Integer.toString(transport_total));
@@ -367,6 +411,8 @@ public class StartActivity extends Activity {
     public void entertain_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
+        TextView title = (TextView) findViewById(R.id.textView_eat_title);
+        title.setText("選擇娛樂預算");
         menu_case = "entertain";
         TextView option_budget = (TextView) this.findViewById(R.id.textView_budget);
         option_budget.setText(Integer.toString(entertain_total));
@@ -412,6 +458,8 @@ public class StartActivity extends Activity {
     public void buy_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
+        TextView title = (TextView) findViewById(R.id.textView_eat_title);
+        title.setText("選擇購物預算");
         menu_case = "buy";
         TextView option_budget = (TextView) this.findViewById(R.id.textView_budget);
         option_budget.setText(Integer.toString(buy_total));
@@ -457,6 +505,8 @@ public class StartActivity extends Activity {
     public void other_menu() {
         ObjectAdapter adapter = null;
         setContentView(R.layout.eat_layout);
+        TextView title = (TextView) findViewById(R.id.textView_eat_title);
+        title.setText("選擇其他預算");
         menu_case = "other";
         TextView option_budget = (TextView) this.findViewById(R.id.textView_budget);
         option_budget.setText(Integer.toString(other_total));
@@ -902,52 +952,21 @@ public class StartActivity extends Activity {
             @Override
             public boolean onLongClick(View view){
                 //set Bundle and start a Activity
+                _viewPos = viewPos;
                 Bundle bundleToServer = new Bundle();
                 bundleToServer.putString("command", "getdata");
-                bundleToServer.putString("object",menu_case);
+                bundleToServer.putString("object", menu_case);
                 bundleToServer.putString("subobject", (String) getItem(position));
                 Intent intent = new Intent();
                 intent.setClass(StartActivity.this, Client_service.class);
+                intent.putExtras(bundleToServer);
                 startActivityForResult(intent, getAverage);
 
-                //build dialog
-                TextView txt_dia = (TextView) findViewById(R.id.txt_dia);
-                txt_dia.setText("Average : " + average);
-                CustomDialog message = new CustomDialog(StartActivity.this);
-                message.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                WindowManager.LayoutParams messageParam = message.getWindow().getAttributes();
-                messageParam.gravity = Gravity.START|Gravity.TOP;
-                messageParam.x = (int)viewPos.getX();
-                messageParam.y = (int)viewPos.getY();
-                message.getWindow().setAttributes(messageParam);
-                message.show();
                 return true;
             }
         }
 
-        class CustomDialog extends Dialog implements View.OnClickListener{
-            public Activity c;
-            public Button ok;
 
-            public CustomDialog(Activity a){
-                super(a);
-                this.c = a;
-            }
-
-            @Override
-            protected void onCreate(Bundle savedInstanceState){
-                super.onCreate(savedInstanceState);
-                requestWindowFeature(Window.FEATURE_NO_TITLE);
-                setContentView(R.layout.my_dialog);
-                ok = (Button) findViewById(R.id.ave_ok);
-                ok.setOnClickListener(this);
-            }
-
-            @Override
-            public void onClick(View view){
-                this.dismiss();
-            }
-        }
         class OnClick implements View.OnClickListener {
             private int position;
             public OnClick(int position){

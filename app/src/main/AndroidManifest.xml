@@ -22,7 +22,10 @@
         <activity android:name=".result" />
         <activity android:name=".Write" />
         <activity android:name=".History" />
+        <activity android:name=".Client_service"/>
         <activity android:name=".Read"></activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
